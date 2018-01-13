@@ -77,9 +77,8 @@ object data {
       size.subSizes.map(subSize => copy(size = subSize))
     }
 
-    override def toString: String = {
+    val filename: String =
       s"$designerId-$designId-${productType.value}${orientation.value}-${size.x}x${size.y}.$extension"
-    }
   }
   object ImageMeta {
     val nameRegex: Regex = raw"(\d+)-(\d+)-(\d+)(\w+)-(\d+)x(\d+)\.(\w+)".r
@@ -98,6 +97,9 @@ object data {
     }
 
     def fromFilenameOption(filename: String): Option[ImageMeta] = Try(fromFilename(filename)).toOption
+
+    def fromFile(file: File): ImageMeta = fromFilename(file.getName)
+    def fromFileOption(file: File): Option[ImageMeta] = fromFilenameOption(file.getName)
   }
 
   case class InternalReport(newlyCreatedFiles: Set[File], uploadedFileUris: Set[RemoteUri]) {

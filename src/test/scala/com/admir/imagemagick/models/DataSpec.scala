@@ -1,5 +1,7 @@
 package com.admir.imagemagick.models
 
+import java.io.File
+
 import com.admir.imagemagick.models.data.{ImageMeta, ImageSize}
 import com.admir.imagemagick.models.data.Orientation.Portrait
 import com.admir.imagemagick.models.data.ProductType.Poster
@@ -7,7 +9,7 @@ import org.scalatest._
 
 class DataSpec extends WordSpec with Matchers {
   "ImageMeta" should {
-    "extract image meta data from the file name using 'fromFilename'" in {
+    "return an ImageMeta using 'fromFilename'" in {
       val expectedImageMeta = ImageMeta(
         designerId = 1,
         designId = 2,
@@ -19,6 +21,40 @@ class DataSpec extends WordSpec with Matchers {
       val actualImageMeta = ImageMeta.fromFilename("1-2-100P-80x120.jpg")
 
       actualImageMeta shouldEqual expectedImageMeta
+    }
+
+    "return a Some(ImageMeta) using 'fromFilenameOption'" in {
+      val actualImageMeta = ImageMeta.fromFilenameOption("1-2-100P-80x120.jpg")
+      actualImageMeta shouldBe defined
+    }
+
+    "return a None using 'fromFilenameOption'" in {
+      val actualImageMeta = ImageMeta.fromFilenameOption("tralalala.jpg")
+      actualImageMeta shouldNot be(defined)
+    }
+
+    "return an ImageMeta using 'fromFile'" in {
+      val expectedImageMeta = ImageMeta(
+        designerId = 1,
+        designId = 2,
+        productType = Poster,
+        orientation = Portrait,
+        size = ImageSize.`80x120`,
+        extension = "jpg"
+      )
+      val actualImageMeta = ImageMeta.fromFile(new File("1-2-100P-80x120.jpg"))
+
+      actualImageMeta shouldEqual expectedImageMeta
+    }
+
+    "return a Some(ImageMeta) using 'fromFileOption'" in {
+      val actualImageMeta = ImageMeta.fromFileOption(new File("1-2-100P-80x120.jpg"))
+      actualImageMeta shouldBe defined
+    }
+
+    "return a None using 'fromFileOption'" in {
+      val actualImageMeta = ImageMeta.fromFileOption(new File("tralalala.jpg"))
+      actualImageMeta shouldNot be(defined)
     }
   }
 
