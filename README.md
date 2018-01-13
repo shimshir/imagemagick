@@ -15,3 +15,4 @@ for that purpose I would use typesafe config with pureconfig to load it into a c
 - The used stream approach is in my opinion perfectly fine for a simple flow (no feedbacks, retries, sophisticated zipping/merging/broadcasting),
 for anything more complex I would use the Graph DSL to define more sophisticated data flows
 - Certain parts of the code contain explanations of the used approach
+- The ExecutionContext in which the IO operations run is supplied as an implicit parameter to the ImageProcessor on class level, for a more fine grained control of the IO processes each ImageFileService method could be written to expect an ExecutionContext as a parameter aswell
